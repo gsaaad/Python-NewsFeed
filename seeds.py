@@ -1,9 +1,11 @@
-from app.models import User, Post, Comment
+from app.models import User, Post, Comment, Vote
 from app.db import Session, Base, engine
+import random
 # drop and rebuild tables
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
+num_votes = [1, 2, 3, 4, 5, 6]
 db = Session()
 # insert users
 db.add_all([
@@ -30,6 +32,17 @@ db.add_all([
   Comment(comment_text='Aliquam erat volutpat. In congue.', user_id=2, post_id=1),
   Comment(comment_text='Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.', user_id=2, post_id=3),
   Comment(comment_text='In hac habitasse platea dictumst.', user_id=3, post_id=3)
+])
+
+
+# insert Votes
+db.add_all([
+  Vote(user_id=random.choice(num_votes), post_id=2),
+  Vote(user_id=random.choice(num_votes), post_id=2),
+  Vote(user_id=random.choice(num_votes), post_id=4),
+  Vote(user_id=random.choice(num_votes), post_id=4),
+  Vote(user_id=random.choice(num_votes), post_id=4),
+  Vote(user_id=random.choice(num_votes), post_id=2)
 ])
 db.commit()
 db.close()
