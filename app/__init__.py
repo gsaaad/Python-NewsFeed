@@ -4,10 +4,11 @@ from app.routes import home, dashboard
 # activate venv
 # .\venv\Scripts\activate
 
+# db
 from app.db import init_db
 
 def create_app(test_config=None):
-    # set up app oncfig
+    # set up app config
     
     
     app = Flask(__name__, static_url_path='/')
@@ -25,5 +26,5 @@ def create_app(test_config=None):
     app.register_blueprint(dashboard)
     
     # db connection
-    init_db()
+    init_db(app)
     return app
