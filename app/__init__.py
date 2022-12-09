@@ -1,6 +1,6 @@
 from flask import Flask
-
 from app.routes import home, dashboard
+from app.db import init_db
 # activate venv
 # .\venv\Scripts\activate
 
@@ -21,4 +21,7 @@ def create_app(test_config=None):
     #register routes
     app.register_blueprint(home)
     app.register_blueprint(dashboard)
+    
+    # when flask is ready:
+    init_db()
     return app
