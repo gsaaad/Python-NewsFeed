@@ -5,7 +5,7 @@ import random
 Base.metadata.drop_all(engine)
 Base.metadata.create_all(engine)
 
-num_votes = [1, 2, 3, 4, 5, 6]
+num_votes = [1, 2, 3, 4]
 db = Session()
 # insert users
 db.add_all([
