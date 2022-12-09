@@ -4,6 +4,8 @@ from app.routes import home, dashboard
 # activate venv
 # .\venv\Scripts\activate
 
+from app.db import init_db
+
 def create_app(test_config=None):
     # set up app oncfig
     
@@ -21,4 +23,7 @@ def create_app(test_config=None):
     #register routes
     app.register_blueprint(home)
     app.register_blueprint(dashboard)
+    
+    # db connection
+    init_db()
     return app
