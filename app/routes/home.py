@@ -12,6 +12,8 @@ def index():
   db = get_db()
   posts = db.query(Post).order_by(Post.created_at.desc()).all()
   return render_template('homepage.html', posts = posts)
+
+
 @bp.route("/login")
 def login():
     return render_template("login.html")

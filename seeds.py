@@ -37,11 +37,11 @@ db.add_all([
 
 # insert Votes
 db.add_all([
+  Vote(user_id=random.choice(num_votes), post_id=1),
   Vote(user_id=random.choice(num_votes), post_id=2),
+  Vote(user_id=random.choice(num_votes), post_id=3),
+  Vote(user_id=random.choice(num_votes), post_id=4),
   Vote(user_id=random.choice(num_votes), post_id=2),
-  Vote(user_id=random.choice(num_votes), post_id=4),
-  Vote(user_id=random.choice(num_votes), post_id=4),
-  Vote(user_id=random.choice(num_votes), post_id=4),
   Vote(user_id=random.choice(num_votes), post_id=2)
 ])
 db.commit()
