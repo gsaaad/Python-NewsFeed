@@ -4,6 +4,7 @@ from flask import Blueprint, render_template
 from app.models import Post
 from app.db import get_db
 
+
 bp = Blueprint('home', __name__, url_prefix='/')
 
 @bp.route('/')
