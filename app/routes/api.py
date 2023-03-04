@@ -33,7 +33,9 @@ def signup():
         # insert failed, so send error to front end
         message = 'Registration failed.. Try again later'
         print(message)
+        db.rollback()
         return jsonify(message), 500
     print(newUser)
     print(sys.exe_info()[0])
+
     return jsonify(id=newUser.id)
