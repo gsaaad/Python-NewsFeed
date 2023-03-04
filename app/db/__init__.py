@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 from flask import g
+# get dot env environment
 load_dotenv()
 
 # connect to database using env variable
