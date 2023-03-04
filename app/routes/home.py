@@ -19,6 +19,7 @@ def index():
 @bp.route("/login")
 def login():
   # not logged in yet
+  print("IS USER LOGGED IN",session.get('loggedIn'))
   if session.get('loggedIn') is None:
     return render_template('login.html')
   return redirect('/dashboard')

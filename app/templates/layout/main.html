@@ -17,9 +17,9 @@
           {% if loggedIn == True %}
           <a href="/dashboard">dashboard</a>
           <button id="logout" class="btn-no-style">logout</button>
-          {% else %} {% block content %}
+          {% else %}
           <a href="/login">login</a>
-          {% endblock content %} {% endif %}
+          {% endif %}
         </nav>
       </header>
       <main>{% block body %}{% endblock %}</main>

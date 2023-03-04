@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, session
-from app.models import User
+from app.models import User, Post, Comment, Vote
 import sys
 from app.db import get_db
 import sqlalchemy
@@ -34,11 +34,10 @@ def signup():
         # insert failed, so send error to front end
         message = 'Registration failed.. Try again later'
         print(message)
+        print(sys.exe_info()[0])
         # if there was an error, rollback / cancel pending process
         db.rollback()
         return jsonify(message), 500
-    print(newUser)
-    # print(sys.exe_info()[0])
     
     # adding session of user login
     session.clear()
@@ -63,6 +62,7 @@ def login():
     
     try:
         user = db.query(User).filter(User.email == data['email']).one()
+        print("grabbed user",user)
         
         
     except:
@@ -77,6 +77,27 @@ def login():
     session['loggedIn'] = True
     
     return jsonify(id = user.id)
+
+@bp.route('/comments', methods=['POST'])
+def comment():
+    data = request.get_json()
+    db = get_db()
     
+    try:
+        # create a new comment
+        newComment = Comment(
+            comment_text = data['comment_text'],
+            post_id = data['post_id'],
+            user_id = session.get('user_id')
+            
+        )
+        
+        db.add(newComment)
+        db.commit()
+    except:
+        print(sys.exc_info()[0])
+        
+        db.rollback()
+        return jsonify(message = 'Comment failed'), 500
     
-    
+    return jsonify(id = newComment.id)
