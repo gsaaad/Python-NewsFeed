@@ -7,6 +7,7 @@ import sqlalchemy
 bp = Blueprint('api', __name__, url_prefix='/api')
 
 
+# Register / add User
 @bp.route('/users', methods=['POST'])
 def signup():
     data= request.get_json()
@@ -48,12 +49,14 @@ def signup():
     # for front end, we want to return a more meaningful response. JSON format
     return jsonify(id=newUser.id)
 
+# Logout User
 @bp.route("/users/logout", methods =['POST'])
 def logout():
     # remove session variables
     session.clear()
     return '', 204
 
+# Login User
 @bp.route("/users/login", methods=['POST'])
 def login():
     data = request.get_json()
@@ -77,6 +80,31 @@ def login():
     
     return jsonify(id = user.id)
 
+# CreatePost
+@bp.route('/posts', methods=['POST'])
+def create():
+    
+    data = request.get_json()
+    db = get_db()
+    
+    try:
+        # create a new post
+        newPost = Post(
+            title = data['title'],
+            post_url = data['post_url'],
+            user_id = session.get('user_id')
+        )
+        
+        db.add(newPost)
+        db.commit()
+    except:
+        print(sys.exc_info()[0])
+        
+        db.rollback()
+        return jsonify(message = 'Creating a post failed..'), 500
+    return jsonify(id = newPost.id)
+
+# Create Comment
 @bp.route('/comments', methods=['POST'])
 def comment():
     data = request.get_json()
@@ -101,6 +129,7 @@ def comment():
     
     return jsonify(id = newComment.id)
 
+# Update Post by ADDING UPVOTE/LIKE/FAVORITE
 @bp.route('/posts/upvote', methods=['PUT'])
 def upvote():
     data = request.get_json()
@@ -122,27 +151,38 @@ def upvote():
         
         return jsonify(message = 'Upvote failed'), 500
     
-    return '', 204
-        
-
-@bp.route('/posts', methods=['POST'])
-def create():
+    return 'Upvoted on POST ID:' + newVote.post_id, 204
+    
+#  Update Post Details (EDIT POST)
+@bp.route('/posts', methods = ['POST'])
+def update(id):
     data = request.get_json()
     db = get_db()
     
     try:
-        # create a new post
-        newPost = Post(
-            title = data['title'],
-            post_url = data['post_url'],
-            user_id = session.get('user_id')
-        )
+        # retrieve post from DB and update title properly
+          post = db.query(Post).filter(Post.id ==id).one()
+          post.title = data['title']
+          db.commit()
+    except:
+        print(sys.exc_info()[0])
         
-        db.add(newPost)
+        db.rollback()
+        return jsonify(message = 'Did not find post with this id..'), 404
+    
+    return 'Edited Post'+ id, 204
+
+@bp.route('/posts/<id>', methods=['DELETE'])
+def delete(id):
+    db = get_db()
+    
+    try:
+        # delete post from DB
+        db.delete(db.query(Post).filter(Post.id == id).one())
         db.commit()
     except:
         print(sys.exc_info()[0])
         
         db.rollback()
-        return jsonify(message = 'Creating a post failed..'), 500
-    return jsonify(id = newPost.id)
+        return jsonify(message = 'Did not find post with this id..'), 404
+    return 'Deleted Post' + id, 204
