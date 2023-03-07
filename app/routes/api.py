@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify, session
 from app.models import User, Post, Comment, Vote
+from app.utils.auth import login_required
 import sys
 from app.db import get_db
 import sqlalchemy
@@ -82,6 +83,8 @@ def login():
 
 # CreatePost
 @bp.route('/posts', methods=['POST'])
+# login required decorator
+@login_required
 def create():
     
     data = request.get_json()
@@ -106,6 +109,8 @@ def create():
 
 # Create Comment
 @bp.route('/comments', methods=['POST'])
+# login required decorator
+@login_required
 def comment():
     data = request.get_json()
     db = get_db()
@@ -131,6 +136,8 @@ def comment():
 
 # Update Post by ADDING UPVOTE/LIKE/FAVORITE
 @bp.route('/posts/upvote', methods=['PUT'])
+# login required decorator
+@login_required
 def upvote():
     data = request.get_json()
     db = get_db()
@@ -155,6 +162,8 @@ def upvote():
     
 #  Update Post Details (EDIT POST)
 @bp.route('/posts', methods = ['POST'])
+# login required decorator
+@login_required
 def update(id):
     data = request.get_json()
     db = get_db()
@@ -173,6 +182,8 @@ def update(id):
     return f'Edited Post {id}', 204
 
 @bp.route('/posts/<id>', methods=['DELETE'])
+# login required decorator
+@login_required
 def delete(id):
     db = get_db()
     
