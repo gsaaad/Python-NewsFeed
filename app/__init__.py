@@ -26,6 +26,7 @@ def create_app(test_config=None):
     app.jinja_env.filters['format_url'] = filters.format_url
     app.jinja_env.filters["format_date"] = filters.format_date
     app.jinja_env.filters["format_plural"] = filters.format_plural
+    print("FILTERS",app.jinja_env.filters)
     
     # add routes
     @app.route('/hello')

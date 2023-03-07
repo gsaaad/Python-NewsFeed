@@ -151,7 +151,7 @@ def upvote():
         
         return jsonify(message = 'Upvote failed'), 500
     
-    return 'Upvoted on POST ID:' + newVote.post_id, 204
+    return f'Upvoted on POST ID: {newVote.post_id}', 204
     
 #  Update Post Details (EDIT POST)
 @bp.route('/posts', methods = ['POST'])
@@ -170,7 +170,7 @@ def update(id):
         db.rollback()
         return jsonify(message = 'Did not find post with this id..'), 404
     
-    return 'Edited Post'+ id, 204
+    return f'Edited Post {id}', 204
 
 @bp.route('/posts/<id>', methods=['DELETE'])
 def delete(id):
@@ -185,4 +185,4 @@ def delete(id):
         
         db.rollback()
         return jsonify(message = 'Did not find post with this id..'), 404
-    return 'Deleted Post' + id, 204
+    return f'Deleted Post {id}', 204
